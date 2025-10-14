@@ -43,8 +43,9 @@ func Signup(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Password hashing failed"})
 		return
 	}
-
+	// Debugging line
 	user := models.User{
+		FirstName:    input.FirstName,
 		Email:        input.Email,
 		PasswordHash: string(hashedPassword),
 	}
@@ -61,7 +62,7 @@ func Signup(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": token})
+	c.JSON(http.StatusOK, gin.H{"token": token, "user": user})
 }
 
 // Signin handler
