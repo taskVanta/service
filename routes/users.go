@@ -29,10 +29,12 @@ func RegisterUserRoutes(router *gin.Engine) {
 
 	userGroup.POST("/signin", handlers.Signin)
 	userGroup.POST("/signup", handlers.Signup)
+	userGroup.GET("/logout", handlers.Logout)
 
 	protected := userGroup.Group("/")
 	protected.Use(middleware.AuthMiddleware())
 	{
+		protected.GET("/profile", handlers.ProfileHandler)
 		protected.POST("/", handlers.CreateUser)
 		protected.GET("/", handlers.GetUsers)
 		protected.GET("/:id", handlers.GetUserByID)
