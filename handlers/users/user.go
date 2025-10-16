@@ -16,15 +16,67 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+func ProfileHandler(c *gin.Context) {
+	// Retrieve email set by AuthMiddleware from context
+	emailValue, exists := c.Get("email")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User email not found in context"})
+		return
+	}
+
+	email, ok := emailValue.(string)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid email format"})
+		return
+	}
+
+	// Fetch user from database using email
+	var user models.User
+	if err := config.DB.Where("email = ?", email).First(&user).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Database error"})
+		}
+		return
+	}
+
+	// Prepare user response excluding sensitive info like PasswordHash
+	userResponse := struct {
+		ID        string `json:"id"`
+		Email     string `json:"email"`
+		FirstName string `json:"first_name,omitempty"`
+		LastName  string `json:"last_name,omitempty"`
+		Role      string `json:"role,omitempty"`
+	}{
+		ID:        user.ID,
+		Email:     user.Email,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+		Role:      user.Role,
+	}
+
+	c.JSON(http.StatusOK, gin.H{"user": userResponse})
+}
+
+func Logout(c *gin.Context) {
+	c.SetCookie("auth_token", "", -1, "/", "", true, true)
+	c.JSON(http.StatusOK, gin.H{"message": "Logged out"})
+}
+
 // Signup handler
 func Signup(c *gin.Context) {
-	var input models.User
+	var input struct {
+		FirstName string `json:"first_name"`
+		Email     string `json:"email"`
+		Password  string `json:"password"` // plain password from client
+	}
+
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Check if a user with this email exists
 	var existingUser models.User
 	err := config.DB.Where("email = ?", input.Email).First(&existingUser).Error
 	if err == nil {
@@ -37,13 +89,13 @@ func Signup(c *gin.Context) {
 		return
 	}
 
-	// Hash password and create user as before
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.PasswordHash), bcrypt.DefaultCost)
+	// Hash password from plain text input
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Password hashing failed"})
 		return
 	}
-	// Debugging line
+
 	user := models.User{
 		FirstName:    input.FirstName,
 		Email:        input.Email,
@@ -55,42 +107,47 @@ func Signup(c *gin.Context) {
 		return
 	}
 
-	token, err := generateJWT(user.Email)
+	token, err := generateJWT(user.Email, user.PasswordHash)
 	if err != nil {
 		log.Printf("JWT generation error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Token generation failed"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": token, "user": user})
+	c.SetCookie("auth_token", token, 3600, "/", "localhost", false, true)
+	c.JSON(http.StatusOK, gin.H{"user": user}) // Remove token from JSON if necessary
 }
 
 // Signin handler
 func Signin(c *gin.Context) {
-	var user models.User
-	if err := c.ShouldBindJSON(&user); err != nil {
+	var input struct {
+		Email    string `json:"email"`
+		Password string `json:"password"` // plain password sent by client
+	}
+
+	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	var tempuser models.User
-	if err := config.DB.Where("email = ?", user.Email).First(&tempuser).Error; err != nil {
+	var user models.User
+	if err := config.DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(tempuser.PasswordHash), []byte(user.PasswordHash)); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(input.Password)); err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
 		return
 	}
 
-	token, err := generateJWT(tempuser.Email)
-
+	token, err := generateJWT(user.Email, user.PasswordHash)
 	if err != nil {
 		log.Printf("JWT generation error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Token generation failed"})
 		return
 	}
+
 	userResponse := struct {
 		ID        string `json:"id"`
 		Email     string `json:"email"`
@@ -98,22 +155,24 @@ func Signin(c *gin.Context) {
 		LastName  string `json:"last_name,omitempty"`
 		Role      string `json:"role,omitempty"`
 	}{
-		ID:        tempuser.ID,
-		Email:     tempuser.Email,
-		FirstName: tempuser.FirstName,
-		LastName:  tempuser.LastName,
-		Role:      tempuser.Role,
+		ID:        user.ID,
+		Email:     user.Email,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
+		Role:      user.Role,
 	}
 
-	c.JSON(http.StatusOK, gin.H{"user": userResponse, "token": token})
+	c.SetCookie("auth_token", token, 3600, "/", "localhost", false, true)
+	c.JSON(http.StatusOK, gin.H{"user": userResponse}) // do not expose token here
 }
 
 // JWT generation example
-func generateJWT(email string) (string, error) {
+func generateJWT(email string, password string) (string, error) {
 	// Define token claims
 	claims := jwt.MapClaims{
 		"email": email,
-		"exp":   time.Now().Add(time.Minute * 5).Unix(), // token expires in 72 hours
+		"pwd":   password,
+		"exp":   time.Now().Add(time.Minute * 1).Unix(), // token expires in 72 hours
 		"iat":   time.Now().Unix(),
 	}
 
