@@ -11,14 +11,14 @@ COPY . .
 # Print Go version during the build
 RUN go version
 
-RUN go build -o task_vantra .
+RUN go build -o task_vanta .
 
 FROM alpine:latest
 
 WORKDIR /root/
 
-COPY --from=builder /app/task_vantra .
+COPY --from=builder /app/task_vanta .
 
 EXPOSE 8080
 
-CMD ["./task_vantra"]
+CMD ["./task_vanta"]
