@@ -1,8 +1,19 @@
-package handlers
+package docs
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+	"service/static"
+
+	"github.com/gin-gonic/gin"
+)
+
+//go:embed ../static/index.html
 
 func ServeAPIDocs(c *gin.Context) {
-	c.Header("Referrer-Policy", "strict-origin-when-cross-origin")
-	c.File("./static/index.html")
+	data, err := static.StaticFiles.ReadFile("static/index.html") // Must match embedded path
+	if err != nil {
+		c.String(http.StatusInternalServerError, "Failed to load API docs")
+		return
+	}
+	c.Data(http.StatusOK, "text/html; charset=utf-8", data)
 }
