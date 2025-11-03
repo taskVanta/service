@@ -114,7 +114,7 @@ func Signup(c *gin.Context) {
 		return
 	}
 	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("auth_token", token, 3600, "/", "", false, true)
+	c.SetCookie("auth_token", token, 3600, "/", "", true, true)
 	c.JSON(http.StatusOK, gin.H{"user": user}) // Remove token from JSON if necessary
 }
 
@@ -162,7 +162,7 @@ func Signin(c *gin.Context) {
 		Role:      user.Role,
 	}
 	c.SetSameSite(http.SameSiteNoneMode)
-	c.SetCookie("auth_token", token, 3600, "/", "", false, true)
+	c.SetCookie("auth_token", token, 3600, "/", "", true, true)
 	c.JSON(http.StatusOK, gin.H{"user": userResponse}) // do not expose token here
 }
 
