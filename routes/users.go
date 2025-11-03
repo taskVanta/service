@@ -26,6 +26,7 @@ func RegisterUserRoutes(router *gin.Engine) {
 	// Apply CORS middleware globally
 	router.Use(cors.New(config))
 	router.GET("/", doc.ServeAPIDocs)
+	router.GET("/docs", doc.ServeAPIDocs)
 	userGroup := router.Group("/api/users")
 
 	userGroup.POST("/signin", userHandler.Signin)
