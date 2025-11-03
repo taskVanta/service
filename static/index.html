@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f8f9fa;
+        }
+
+        h1,
+        h2 {
+            color: #007bff;
+        }
+
+        code {
+            background-color: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        pre {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        section {
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .copy-container {
+            position: relative;
+            margin-bottom: 1em;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            transition: transform 0.2s ease;
+            user-select: none;
+        }
+
+        .copy-button:focus {
+            outline: none;
+        }
+
+        .copy-button:hover {
+            transform: scale(1.1);
+        }
+
+        .copy-icon {
+            width: 18px;
+            height: 18px;
+            fill: #007bff;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Task Vantra API Documentation</h1>
+
+    <section>
+                <h2>Endpoints</h2>
+        <h2>Base URL</h2>
+        <div class="copy-container">
+            <button class="copy-button" onclick="copyToClipboard(this)" aria-label="Copy code">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path
+                        d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z" />
+                </svg>
+            </button>
+            <pre><code>https://service-q9nm.onrender.com/api</code></pre>
+        </div>
+    </section>
+
+    <section>
+        <h3>POST /api/users/signin</h3>
+        <p>User login using curl</p>
+        <div class="copy-container">
+            <button class="copy-button" onclick="copyToClipboard(this)" aria-label="Copy code">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path
+                        d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z" />
+                </svg>
+            </button>
+            <pre><code>curl -X POST https://service-q9nm.onrender.com/api/users/signin \
+-H "Content-Type: application/json" \
+-d '{"email":"user@example.com","password":"yourpassword"}'</code></pre>
+        </div>
+
+        <p>User login</p>
+        <div class="copy-container">
+            <button class="copy-button" onclick="copyToClipboard(this)" aria-label="Copy code">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path
+                        d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z" />
+                </svg>
+            </button>
+            <pre><code>https://service-q9nm.onrender.com/api/users/signin
+
+</code></pre>
+        </div>
+        <p>Request Body</p>
+        <div class="copy-container">
+            <button class="copy-button" onclick="copyToClipboard(this)" aria-label="Copy code">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path
+                        d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z" />
+                </svg>
+            </button>
+            <pre><code>   
+{
+    "email":"user@example.com",
+    "password":"yourpassword"
+}
+
+</code></pre>
+        </div>
+
+        <h3>POST /api/users/signup</h3>
+        <p>Create a new user account using curl</p>
+        <div class="copy-container">
+            <button class="copy-button" onclick="copyToClipboard(this)" aria-label="Copy code">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path
+                        d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z" />
+                </svg>
+            </button>
+            <pre><code>curl -X POST https://service-q9nm.onrender.com/api/users/signup \
+-H "Content-Type: application/json" \
+-d '{"name":"John","email":"john@example.com", "password":"yourpassword"}'</code></pre>
+        </div>
+                <p>User login</p>
+        <div class="copy-container">
+            <button class="copy-button" onclick="copyToClipboard(this)" aria-label="Copy code">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path
+                        d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z" />
+                </svg>
+            </button>
+            <pre><code>https://service-q9nm.onrender.com/api/users/signup
+
+</code></pre>
+        </div>
+        <p>Request Body</p>
+        <div class="copy-container">
+            <button class="copy-button" onclick="copyToClipboard(this)" aria-label="Copy code">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path
+                        d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z" />
+                </svg>
+            </button>
+            <pre><code>   
+{
+  "name": "John",
+  "email": "john.doe@example.com",
+  "password":"hello@123"
+}
+
+
+</code></pre>
+        </div>
+
+   
+    </section>
+
+    <section>
+       
+        <div>
+            <h3>GET /users</h3>
+            <p>Retrieve a list of users.</p>
+            <div class="copy-container">
+                <button class="copy-button" onclick="copyToClipboard(this)" aria-label="Copy code">
+                    <svg class="copy-icon" viewBox="0 0 24 24">
+                        <path
+                            d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z" />
+                    </svg>
+                </button>
+                <pre><code>https://service-q9nm.onrender.com/api/users</code></pre>
+            </div>
+            <p>Response:</p>
+            <pre><code>[
+  {
+      "id": "TV0001",
+      "name": "test",
+      "last_name": "",
+      "username": null,
+      "email": "test@new.com",
+      "role": "administration",
+      "created_at": 1760618536804,
+      "updated_at": 1760618536804
+  },
+  {
+      "id": "TV0002",
+      "name": "test1",
+      "last_name": "",
+      "username": null,
+      "email": "test@n.com",
+      "role": "manager",
+      "created_at": 1760618778403,
+      "updated_at": 1760618778403
+  }
+]</code></pre>
+        </div>
+
+        <div>
+            <h3>GET /users/:id</h3>
+            <p>Retrieve user by ID.</p>
+            <div class="copy-container">
+                <button class="copy-button" onclick="copyToClipboard(this)" aria-label="Copy code">
+                    <svg class="copy-icon" viewBox="0 0 24 24">
+                        <path
+                            d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z" />
+                    </svg>
+                </button>
+                <pre><code>https://service-q9nm.onrender.com/api/users/{{userid}}</code></pre>
+            </div>
+            <p>Example</p>
+            <div class="copy-container">
+                <button class="copy-button" onclick="copyToClipboard(this)" aria-label="Copy code">
+                    <svg class="copy-icon" viewBox="0 0 24 24">
+                        <path
+                            d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z" />
+                    </svg>
+                </button>
+                <pre><code>https://service-q9nm.onrender.com/api/users/TV0001</code></pre>
+            </div>
+            <p>Response:</p>
+            <pre><code>
+  {
+      "id": "TV0001",
+      "name": "test",
+      "last_name": "",
+      "username": null,
+      "email": "test@new.com",
+      "role": "administration",
+      "created_at": 1760618536804,
+      "updated_at": 1760618536804
+  }
+</code></pre>
+        </div>
+    </section>
+
+    <section>
+        <h3>POST /users</h3>
+        <p>Create a new user.</p>
+        <div class="copy-container">
+            <button class="copy-button" onclick="copyToClipboard(this)" aria-label="Copy code">
+                <svg class="copy-icon" viewBox="0 0 24 24">
+                    <path
+                        d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z" />
+                </svg>
+            </button>
+            <pre><code>https://service-q9nm.onrender.com//api/users/
+</code></pre>
+        </div>
+        <p>Request body:</p>
+        <pre><code>{
+ "name": "test",
+ "email": "test@new.com"
+}</code></pre>
+            <p>Response:</p>
+            <pre><code>
+  {
+      "id": "TV0001",
+      "name": "test",
+      "last_name": "",
+      "username": null,
+      "email": "test@new.com",
+      "role": "administration",
+      "created_at": 1760618536804,
+      "updated_at": 1760618536804
+  }
+</code></pre>
+    </section>
+
+<section>
+  <h3>PUT /users/{id}</h3>
+  <p>Update an existing user by ID.</p>
+  <div class="copy-container">
+    <button class="copy-button" onclick="copyToClipboard(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24">
+        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z"/>
+      </svg>
+    </button>
+    <pre><code>https://service-q9nm.onrender.com/api/users/TV0001</code></pre>
+  </div>
+  <p>Request body:</p>
+  <pre><code>{
+  "name": "Updated Name",
+  "email": "updated@example.com"
+}</code></pre>
+  <p>Response:</p>
+  <pre><code>{
+  "id": "TV0001",
+  "name": "Updated Name",
+  "email": "updated@example.com",
+  "role": "user",
+  "created_at": 1760618536804,
+  "updated_at": 1760619536804
+}</code></pre>
+</section>
+
+<section>
+  <h3>DELETE /users/{id}</h3>
+  <p>Delete an existing user by ID.</p>
+  <div class="copy-container">
+    <button class="copy-button" onclick="copyToClipboard(this)" aria-label="Copy code">
+      <svg class="copy-icon" viewBox="0 0 24 24">
+        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z"/>
+      </svg>
+    </button>
+    <pre><code>https://service-q9nm.onrender.com/api/users/TV0001</code></pre>
+  </div>
+  <p>Response:</p>
+  <pre><code>{
+  "message": "User deleted successfully"
+}</code></pre>
+</section>
+
+
+    <script>
+        function copyToClipboard(button) {
+            const codeBlock = button.nextElementSibling.innerText;
+            navigator.clipboard
+                .writeText(codeBlock)
+                .then(() => {
+                    button.innerHTML =
+                        '<svg class="copy-icon" viewBox="0 0 24 24" fill="#28a745"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';
+                    setTimeout(() => {
+                        button.innerHTML = `<svg class="copy-icon" viewBox="0 0 24 24">
+            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 18H8V7h11v16z"/>
+          </svg>`;
+                    }, 2000);
+                })
+                .catch((err) => {
+                    console.error("Copy failed", err);
+                    alert("Failed to copy");
+                });
+        }
+    </script>
+</body>
+
+</html>
