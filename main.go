@@ -17,6 +17,7 @@ func main() {
 	config.DB.AutoMigrate(&models.User{})
 
 	r := gin.Default()
+
 	routes.RegisterUserRoutes(r)
 
 	r.Run(":8080")
