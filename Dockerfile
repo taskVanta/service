@@ -8,14 +8,17 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o app .
+# Print Go version during the build
+RUN go version
+
+RUN go build -o task_vantra .
 
 FROM alpine:latest
 
 WORKDIR /root/
 
-COPY --from=builder /app/app .
+COPY --from=builder /app/task_vantra .
 
 EXPOSE 8080
 
-CMD ["./app"]
+CMD ["./task_vantra"]
